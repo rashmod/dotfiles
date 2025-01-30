@@ -5,12 +5,12 @@ return { -- Autoformat
 	log_level = "debug",
 	keys = {
 		{
-			"<leader>f",
+			"<leader>ff",
 			function()
 				require("conform").format({ async = true, lsp_format = "fallback" })
 			end,
 			mode = "",
-			desc = "[F]ormat buffer",
+			desc = "[F]ile [F]ormat",
 		},
 	},
 	opts = {
