@@ -16,13 +16,14 @@ return {
 			vim.cmd.hi("Comment gui=none")
 		end,
 	}, ]]
-	--[[ {
+	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
 		init = function()
 			require("catppuccin").setup({
-				flavour = "frappe", -- latte, frappe, macchiato, mocha
+				-- flavour = "mocha", -- latte, frappe, macchiato, mocha
+				flavour = "macchiato", -- latte, frappe, macchiato, mocha
 				background = { -- :h background
 					light = "latte",
 					dark = "mocha",
@@ -128,8 +129,8 @@ return {
 			-- setup must be called before loading
 			vim.cmd.colorscheme("catppuccin")
 		end,
-	}, ]]
-	{
+	},
+	--[[ {
 		"bluz71/vim-nightfly-colors",
 		name = "nightfly",
 		lazy = false,
@@ -137,5 +138,5 @@ return {
 		init = function()
 			vim.cmd.colorscheme("nightfly")
 		end,
-	},
+	}, ]]
 }
