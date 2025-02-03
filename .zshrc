@@ -130,6 +130,7 @@ alias zshconfig="nvim ~/dotfiles/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias python="python3"
 alias ta="tmux attach"
+alias kube="kubectl -n solutions"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
