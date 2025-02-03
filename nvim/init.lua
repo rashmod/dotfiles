@@ -36,8 +36,19 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 require("vim-options")
-require("lazy").setup("plugins")
---
+require("lazy").setup("plugins", {
+	change_detection = {
+		notify = false,
+	},
+})
+
+-- [[ Project-specific config loader ]]
+-- If there's a `.nvim.lua` file in the current directory, load it
+if vim.loop.fs_stat(".nvim.lua") then
+	vim.opt.exrc = true -- Allow project-specific config
+	vim.opt.secure = true -- Prevent unsafe execution of unknown scripts
+	vim.cmd("luafile .nvim.lua") -- Automatically load the project-specific `.nvim.lua`
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
