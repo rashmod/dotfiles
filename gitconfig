@@ -1,0 +1,12 @@
+[user]
+    name = Bhushan
+    email = alhatbhushan@gmail.com
+[alias]
+    ci = commit
+    co = checkout
+    con = checkout -b
+    br = branch
+    cfg = config
+    st = status .
+    sta = status
+    lo = log --oneline
