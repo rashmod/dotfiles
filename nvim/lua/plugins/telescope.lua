@@ -58,7 +58,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			--  All the info you're looking for is in `:help telescope.setup()`
 			--
 			defaults = {
-				file_ignore_patterns = { ".git" },
+				file_ignore_patterns = { ".git/" },
 				--   mappings = {
 				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 				--   },

@@ -10,6 +10,9 @@ export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/home/rashmod/.local/bin"
 export PATH="$HOME/.tmuxifier/bin:$PATH"
 
+export FLYCTL_INSTALL="/home/rashmod/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
@@ -131,6 +134,7 @@ alias zshconfig="nvim ~/dotfiles/.zshrc"
 alias python="python3"
 alias ta="tmux attach"
 alias kube="kubectl -n solutions"
+alias lg="lazygit"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

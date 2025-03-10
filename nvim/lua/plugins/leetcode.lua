@@ -1,6 +1,7 @@
 return {
 	"kawre/leetcode.nvim",
 	opts = {
+
 		arg = "leetcode.nvim",
 
 		lang = "python3",
