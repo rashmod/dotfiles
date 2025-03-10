@@ -5,6 +5,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 export EDITOR='nvim'
 
+export PATH="$PATH:/root/.local/bin"
 export PATH="$PATH:/snap/bin"
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/home/rashmod/.local/bin"
@@ -147,3 +148,13 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# bun completions
+[ -s "/home/rashmod/.bun/_bun" ] && source "/home/rashmod/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
