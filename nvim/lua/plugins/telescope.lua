@@ -1,6 +1,6 @@
 -- NOTE: Plugins can specify dependencies.
 --
--- The dependencies are proper plugin specifications as well - anything
+-- The dependencies are proper plugin specifications as well - anythingteles
 -- you do for a plugin at the top level, you can do for a dependency.
 --
 -- Use the `dependencies` key to specify the dependencies of a particular plugin
@@ -58,7 +58,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			--  All the info you're looking for is in `:help telescope.setup()`
 			--
 			defaults = {
-				file_ignore_patterns = { ".git/" },
+				file_ignore_patterns = { ".git/", "node_modules/" },
 				--   mappings = {
 				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
 				--   },
