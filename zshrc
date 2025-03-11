@@ -23,7 +23,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-eval "$(oh-my-posh init zsh --config ~/.poshthemes/themes/clean-detailed.omp.json)"
+eval "$(oh-my-posh init zsh --config $HOME/dotfiles/ohmyposh.toml)"
 eval "$(tmuxifier init -)"
 
 setopt no_beep
@@ -38,7 +38,7 @@ bindkey -M viins 'jk' vi-cmd-mode
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="agnoster"
+# ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -102,6 +102,7 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git vi-mode)
 
+source <(kubectl completion zsh)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -130,16 +131,12 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconfig="nvim ~/dotfiles/.zshrc"
+alias zshconfig="nvim ~/dotfiles/zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias python="python3"
 alias ta="tmux attach"
 alias kube="kubectl -n solutions"
 alias lg="lazygit"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # pnpm
 export PNPM_HOME="/home/rashmod/.local/share/pnpm"
@@ -155,6 +152,3 @@ esac
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
