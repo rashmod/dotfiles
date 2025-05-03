@@ -85,7 +85,11 @@ vim.opt.writebackup = false
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
-vim.o.fileformats = "dos,unix"
+-- line wrapping
+vim.opt.wrap = true
+vim.opt.linebreak = true
+
+-- vim.o.fileformats = "dos,unix"
 -- vim.o.fileformats = "dos"
 
 -- vim.api.nvim_create_autocmd("BufWritePre", {
