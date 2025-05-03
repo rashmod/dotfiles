@@ -23,6 +23,13 @@ return { -- Collection of various small independent plugins/modules
 		-- set use_icons to true if you have a Nerd Font
 		statusline.setup({ use_icons = vim.g.have_nerd_font })
 
+		-- Show only the file name (no path)
+		statusline.section_filename = function()
+			local name = vim.fn.expand("%:t")
+			local modified = vim.bo.modified and " [+]" or ""
+			return name .. modified
+		end
+
 		-- You can configure sections in the statusline by overriding their
 		-- default behavior. For example, here we set the section for
 		-- cursor location to LINE:COLUMN
