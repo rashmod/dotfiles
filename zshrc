@@ -135,3 +135,13 @@ esac
 # Configure Bun (JavaScript runtime)
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+export EDITOR=nvim
+export SUDO_EDITOR=nvim
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/mc mc
