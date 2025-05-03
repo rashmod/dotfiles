@@ -3,6 +3,8 @@
     email = alhatbhushan@gmail.com
 [alias]
     ci = commit
+    cia = commit --amend
+    cian = commit --amend --no-edit
     co = checkout
     con = checkout -b
     br = branch
@@ -10,3 +12,6 @@
     st = status .
     sta = status
     lo = log --oneline
+[push]
+    autoSetupRemote = true
+    default = current
