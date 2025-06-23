@@ -34,9 +34,30 @@ return { -- Collection of various small independent plugins/modules
 		-- Show only the file name (no path)
 		---@diagnostic disable-next-line: duplicate-set-field
 		statusline.section_filename = function()
-			local name = vim.fn.expand("%:t")
+			local filename = vim.fn.expand("%:t") -- file name
+			local fileext = vim.fn.expand("%:e") -- file extension
+			local parent_dir = vim.fn.fnamemodify(vim.fn.expand("%:h"), ":t") -- parent dir
+			local filename_without_ext = vim.fn.expand("%:t:r")
+
+			local js_like_exts = {
+				js = true,
+				ts = true,
+				jsx = true,
+				tsx = true,
+			}
+
+			local special_filenames = {
+				["index"] = true,
+				["page"] = true,
+			}
+
 			local modified = vim.bo.modified and " [+]" or ""
-			return name .. modified
+
+			if special_filenames[filename_without_ext] and js_like_exts[fileext] then
+				return parent_dir .. "/" .. filename .. modified
+			end
+
+			return filename .. modified
 		end
 
 		-- You can configure sections in the statusline by overriding their

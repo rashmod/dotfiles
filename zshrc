@@ -118,6 +118,7 @@ source $ZSH/oh-my-zsh.sh
 alias zshconfig="nvim ~/dotfiles/zshrc"  # Quickly edit Zsh config
 # alias ohmyzsh="mate ~/.oh-my-zsh"      # Example alias for editing Oh My Zsh
 alias python="python3"                   # Default to Python 3
+alias pip="pip3"                         # Default to Pip 3
 alias ta="tmux attach"                    # Attach to Tmux session
 alias kube="kubectl -n solutions"         # Shorter Kubernetes command
 alias lg="lazygit"                        # Open lazygit

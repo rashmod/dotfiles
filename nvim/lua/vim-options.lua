@@ -193,6 +193,6 @@ vim.api.nvim_create_autocmd("filetype", {
 	group = "JSLogMacro",
 	pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 	callback = function()
-		vim.fn.setreg("l", "yoconsole.log('jkpa:', jkpa)jk")
+		vim.fn.setreg("l", "oconsole.log('jkpa:', jkpa)jk")
 	end,
 })
