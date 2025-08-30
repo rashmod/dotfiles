@@ -1,5 +1,5 @@
 return {
-	"Exafunction/codeium.vim",
+	"Exafunction/windsurf.vim",
 	event = { "BufEnter" },
 
 	-- Remove the `use` here if you're using folke/lazy.nvim.
