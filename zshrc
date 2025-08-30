@@ -115,13 +115,17 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch $(uname -m)"
 
 # Define personal aliases
-alias zshconfig="nvim ~/dotfiles/zshrc"  # Quickly edit Zsh config
+alias config="nvim ~/dotfiles"           # Quickly edit config
 # alias ohmyzsh="mate ~/.oh-my-zsh"      # Example alias for editing Oh My Zsh
 alias python="python3"                   # Default to Python 3
 alias pip="pip3"                         # Default to Pip 3
-alias ta="tmux attach"                    # Attach to Tmux session
-alias kube="kubectl -n solutions"         # Shorter Kubernetes command
-alias lg="lazygit"                        # Open lazygit
+alias ta="tmux attach"                   # Attach to Tmux session
+alias ts="tmux-sessionizer"              # Open Tmux sessionizer
+alias kube="kubectl -n solutions"        # Shorter Kubernetes command
+alias lg="lazygit"                       # Open lazygit
+
+# Auto-start tmux home session if not already inside tmux
+[ -z "$TMUX" ] && ~/dotfiles/tmux-home.sh
 
 # Configure PNPM (Package Manager for Node.js)
 export PNPM_HOME="/home/rashmod/.local/share/pnpm"
@@ -146,3 +150,9 @@ source <(ng completion script)
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/mc mc
+
+
+# This alias runs the Cursor Setup Wizard, simplifying installation and configuration.
+# For more details, visit: https://github.com/jorcelinojunior/cursor-setup-wizard
+alias cursor-setup="/home/rashmod/cursor-setup-wizard/cursor_setup.sh"
+
