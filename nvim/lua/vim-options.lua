@@ -92,6 +92,13 @@ vim.opt.linebreak = true
 -- vim.o.fileformats = "dos,unix"
 -- vim.o.fileformats = "dos"
 
+vim.opt.winbar = "%{%v:lua.require'utils.winbar'.file_path()%}"
+
+vim.api.nvim_set_hl(0, "WinBarPath", {
+	fg = "#fab387", -- or any color you like
+	bold = true,
+})
+
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 -- 	pattern = "*",
 -- 	command = "set fileformat=dos",
@@ -164,8 +171,8 @@ vim.keymap.set({ "n", "x" }, "<leader>P", [["+p]], { desc = "Paste from system c
 
 vim.keymap.set("n", "<C-K>", "<cmd>cnext<CR>zz", { desc = "Next in quick fix list" })
 vim.keymap.set("n", "<C-J>", "<cmd>cprev<CR>zz", { desc = "Previous in quick fix list" })
-vim.keymap.set("n", "<leader>K", "<cmd>lnext<CR>zz", { desc = "TODO: write a desc (quick fix command)" })
-vim.keymap.set("n", "<leader>J", "<cmd>lprev<CR>zz", { desc = "TODO: write a desc (quick fix command)" })
+vim.keymap.set("n", "<leader>K", "<cmd>lnext<CR>zz", { desc = "Jump to next location list item and center screen" })
+vim.keymap.set("n", "<leader>J", "<cmd>lprev<CR>zz", { desc = "Jump to previous location list item and center screen" })
 
 vim.keymap.set(
 	"n",
