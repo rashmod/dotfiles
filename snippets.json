@@ -1,0 +1,209 @@
+{
+  "version": 7,
+  "folders": [
+    {
+      "name": "Personal Info",
+      "info": "Common personal details for forms",
+      "app": "TEXT",
+      "snippets": [
+        {
+          "name": "Phone Number",
+          "shortcut": ";phone",
+          "type": "text",
+          "text": "8828477708"
+        },
+        {
+          "name": "Email",
+          "shortcut": ";email",
+          "type": "text",
+          "text": "alhatbhushan@gmail.com"
+        },
+        {
+          "name": "Address",
+          "shortcut": ";addr",
+          "type": "text",
+          "text": "Nehru Nagar, Kurla East"
+        },
+        {
+          "name": "City",
+          "shortcut": ";city",
+          "type": "text",
+          "text": "Mumbai"
+        },
+        {
+          "name": "State",
+          "shortcut": ";state",
+          "type": "text",
+          "text": "Maharashtra"
+        },
+        {
+          "name": "Pincode",
+          "shortcut": ";pincode",
+          "type": "text",
+          "text": "400024"
+        },
+        {
+          "name": "Aadhar",
+          "shortcut": ";aadhar",
+          "type": "text",
+          "text": "7758 3789 9395"
+        },
+        {
+          "name": "PAN Card",
+          "shortcut": ";pancard",
+          "type": "text",
+          "text": "DFLPA2203G"
+        }
+      ]
+    },
+    {
+      "name": "Work",
+      "info": "Professional details",
+      "app": "TEXT",
+      "snippets": [
+        {
+          "name": "Signature",
+          "shortcut": ";sig",
+          "type": "text",
+          "text": "Best regards\nBhushan Alhat\nFull Stack Developer"
+        },
+        {
+          "name": "Company",
+          "shortcut": ";comp",
+          "type": "text",
+          "text": "Granular AI"
+        },
+        {
+          "name": "College",
+          "shortcut": ";clg",
+          "type": "text",
+          "text": "Datta Meghe College of Engineering"
+        },
+        {
+          "name": "University",
+          "shortcut": ";uni",
+          "type": "text",
+          "text": "University of Mumbai"
+        },
+        {
+          "name": "Degree",
+          "shortcut": ";be",
+          "type": "text",
+          "text": "Bachelor of Engineering"
+        },
+        {
+          "name": "Branch",
+          "shortcut": ";it",
+          "type": "text",
+          "text": "Information Technology"
+        },
+        {
+          "name": "PRN",
+          "shortcut": ";prn",
+          "type": "text",
+          "text": "2021016402136157"
+        },
+        {
+          "name": "Student ID",
+          "shortcut": ";stdid",
+          "type": "text",
+          "text": "2021DSIT023"
+        }
+      ]
+    },
+    {
+      "name": "Online Profiles",
+      "info": "Links to GitHub / LinkedIn",
+      "app": "TEXT",
+      "snippets": [
+        {
+          "name": "GitHub",
+          "shortcut": ";github",
+          "type": "text",
+          "text": "https://github.com/rashmod/"
+        },
+        {
+          "name": "LinkedIn",
+          "shortcut": ";linkedin",
+          "type": "text",
+          "text": "https://www.linkedin.com/in/bhushan-alhat/"
+        }
+      ]
+    },
+    {
+      "name": "Names",
+      "info": "First, middle, last, full names",
+      "app": "TEXT",
+      "snippets": [
+        {
+          "name": "First Name",
+          "shortcut": ";fn",
+          "type": "text",
+          "text": "Bhushan"
+        },
+        {
+          "name": "Middle Name",
+          "shortcut": ";mn",
+          "type": "text",
+          "text": "Umesh"
+        },
+        {
+          "name": "Last Name",
+          "shortcut": ";ln",
+          "type": "text",
+          "text": "Alhat"
+        },
+        {
+          "name": "First + Last Name",
+          "shortcut": ";fln",
+          "type": "text",
+          "text": "Bhushan Alhat"
+        },
+        {
+          "name": "Full Name (with Middle)",
+          "shortcut": ";fmln",
+          "type": "text",
+          "text": "Bhushan Umesh Alhat"
+        }
+      ]
+    },
+    {
+      "name": "Messaging Templates",
+      "info": "Common LinkedIn / DM templates",
+      "app": "TEXT",
+      "snippets": [
+        {
+          "name": "LinkedIn Connect",
+          "shortcut": ";connect",
+          "type": "text",
+          "text": "Hey {cursor}, I'd like to connect with you to explore opportunities in tech. I'm a graduate student, have relevant knowledge in React, Node, Express, Typescript, PostgreSQL, MongoDB.\nHere's my GitHub Link: https://github.com/rashmod/\nRegards,\nBhushan"
+        },
+        {
+          "name": "Send DM (short)",
+          "shortcut": ";senddms",
+          "type": "text",
+          "text": "I'm Bhushan, a graduate student and a Full Stack Developer, and I was wondering if there were any openings at <company>. Here's a bit about me:\nGitHub: https://github.com/rashmod/\nI have attached my resume for your review.\nAppreciate your Time!\nRegards,\nBhushan"
+        },
+        {
+          "name": "Send DM (detailed)",
+          "shortcut": ";senddmd",
+          "type": "text",
+          "text": "Hi {cursor},\n\nI’m Bhushan Alhat, a recent graduate with experience as a Full Stack Developer. I’m interested in exploring opportunities at [Company]. I’ve interned at Living Things, where I worked with Node.js and React, and developed projects like a video streaming platform.\n\nYou can check out my GitHub here: https://github.com/rashmod/ . I’ve attached my resume for your review.\n\nThank you for your time!\n\nBest,\nBhushan"
+        }
+      ]
+    },
+    {
+      "name": "Resume",
+      "info": "Resume text block",
+      "app": "TEXT",
+      "snippets": [
+        {
+          "name": "Resume Full",
+          "shortcut": ";resume",
+          "type": "text",
+          "text": "Bhushan Alhat\nalhatbhushan@gmail.com ⬧ 8828477708 ⬧ Mumbai, Maharashtra\nLinkedIn: linkedin.com/in/bhushan-alhat/ ⬧ GitHub: github.com/rashmod\n\nWORK EXPERIENCE\n\nGranular\nNov. 2024 – Present\nFull Stack Developer\nRemote\n\nRebuilt the 2D CAD-style roof measurement tool, replacing legacy tool and third-party SaaS solutions; implemented snapping, roof facet detection, and exports (XML, JSON, XLSX, PDF) for inspection workflows.\nImplemented advanced algorithms for the 2D measurement tool, including Tarjan’s bridge-finding, DCEL construction, face-walking, signed area classification, and BFS/DFS, enabling accurate detection of roof facets and convex hull for Ground Control Points.\nDeveloped a 3D roof modeling prototype in Three.js with a composition-driven architecture, supporting hip and gable roofs with interactive drag, resize, and automatic constraint-based geometry updates.\nLed Estimates V2 and Quick Estimate workflows, enabling CSV/PDF exports for estimates and Statement of Loss; added user-specific pricing preferences for personalized cost calculations, collaborated with sales and onsite teams to improve calculation accuracy.\nBuilt CI/CD pipelines, Kubernetes cron jobs, email notifications, and geospatial utilities.\n\nLiving Things\nOct. 2023 – Apr. 2024\nFull Stack Developer Intern\nMumbai, Maharashtra\n\nConducted scoping and technical feasibility analysis for the development of an internal operations dashboard.\nCollaborated with the operations team to gather requirements, ensuring alignment with business objectives.\nImplemented backend functionalities using Node.js, enabling seamless integration and data management for improved monitoring of onsite devices.\nUtilized React for the frontend to create an intuitive user interface, addressing specific operational needs.\nWrote MongoDB queries and designed aggregations to visualize and analyze data\n\n\nPROJECTS\n\nStreamline\nLive link | GitHub link\n\nReact | TypeScript | Node.js | Express | PostgreSQL | AWS | Docker | Kafka\nDeveloped a full-stack video streaming platform with user registration, video uploads, and adaptive bitrate streaming.\nArchitected a microservices-based backend, enabling scalable video processing.\nImplemented video transcoding pipeline with Kafka to handle concurrent uploads efficiently.\nEnsured secure media storage and delivery using AWS S3 and CloudFront.\n\nSKILLS\n\nReact,Next.js,TypeScript,tRPC,Node.js,Express.js,Go,PostgreSQL,MongoDB,Docker,Kubernetes,AWS\n\nEDUCATION\n\nDatta Meghe College of Engineering (Mumbai University)\nGraduated: May 2024\nBE, Information Technology\nNavi Mumbai, Maharashtra\n\n8.3 GPA; Honors in AI and ML\nRelevant Coursework: OOPs, Data Structure and Algorithms, DBMS, Operating Systems, Computer Network, Automata Theory"
+        }
+      ]
+    }
+  ]
+}
