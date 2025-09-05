@@ -4,24 +4,30 @@ strip_ansi() {
     sed -r 's/\x1B\[[0-9;]*[mK]//g'
 }
 
+# Function to colorize sessions
+color_session() {
+    local session="$1"
+    local current="$2"
+
+    if [[ "$session" == "$current" ]]; then
+        # Yellow for current session
+        printf "\033[33msession:%s\033[0m\n" "$session"
+    else
+        # Green for other sessions
+        printf "\033[32msession:%s\033[0m\n" "$session"
+    fi
+}
+
 # List existing tmux sessions
 sessions=$(tmux list-sessions -F "#{session_name}" 2>/dev/null)
 
-
+# Get current tmux session
 current_session=$(tmux display-message -p '#S' 2>/dev/null)
-echo "Current session: '$current_session'"
 
-# List existing sessions with coloring
-colored_sessions=$(echo "$sessions" | sed 's/^/session:/' | awk -v current="$current_session" '
-{
-    name = $0
-    gsub(/^session:/,"",name)
-    if (name == current) {
-        print "\033[33m" $0 "\033[0m"   # yellow for current session
-    } else {
-        print "\033[32m" $0 "\033[0m"   # green for other sessions
-    }
-}')
+# Colorize sessions: yellow for current, green for others
+colored_sessions=$(while read -r s; do
+    color_session "$s" "$current_session"
+done <<< "$sessions")
 
 # Combine sessions and dirs, prefix sessions so you can distinguish
 selected=$(
