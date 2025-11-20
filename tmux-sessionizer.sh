@@ -57,7 +57,7 @@ if [[ "$cleaned" == session:* ]]; then
 else
   # Otherwise, treat it as a directory → create/find session
   selected_dir="$cleaned"
-  session_name=$(basename "$selected_dir" | tr -c '[:alnum:]' '_')
+  session_name=$(basename "$selected_dir" | tr -d '\n' | tr -c '[:alnum:]' '_')
 
   if ! tmux has-session -t="$session_name" 2>/dev/null; then
     tmux new-session -ds "$session_name" -c "$selected_dir"

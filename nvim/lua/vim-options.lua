@@ -174,6 +174,8 @@ vim.keymap.set("n", "<C-J>", "<cmd>cprev<CR>zz", { desc = "Previous in quick fix
 vim.keymap.set("n", "<leader>K", "<cmd>lnext<CR>zz", { desc = "Jump to next location list item and center screen" })
 vim.keymap.set("n", "<leader>J", "<cmd>lprev<CR>zz", { desc = "Jump to previous location list item and center screen" })
 
+vim.keymap.set("n", "<leader>rb", "<cmd>e!<CR>", { desc = "Reload current buffer from disk (discard changes)" })
+
 vim.keymap.set(
 	"n",
 	"<leader>rr",
