@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+scan_mode="${1:-personal}"
+
 strip_ansi() {
     sed -r 's/\x1B\[[0-9;]*[mK]//g'
 }
@@ -29,20 +31,44 @@ colored_sessions=$(while read -r s; do
     color_session "$s" "$current_session"
 done <<< "$sessions")
 
+case "$scan_mode" in
+  personal)
+    search_root="$HOME/personal"
+    max_depth=4
+    prompt="Sessions/Personal> "
+    ;;
+  all)
+    search_root="/"
+    max_depth=6
+    prompt="Sessions/Projects> "
+    ;;
+  *)
+    printf 'Unknown scan mode: %s\n' "$scan_mode" >&2
+    exit 1
+    ;;
+esac
+
+dirs=""
+if [ -d "$search_root" ]; then
+  dirs=$(
+    fd . "$search_root" \
+      --type d \
+      --min-depth 1 \
+      --max-depth "$max_depth" \
+      --hidden \
+      --exclude .git \
+      --exclude node_modules \
+      --exclude __pycache__ \
+      --exclude .venv
+  )
+fi
+
 # Combine sessions and dirs, prefix sessions so you can distinguish
 selected=$(
-  ( echo "$colored_sessions"; echo "$(
-  fd . / \
-    --type d \
-    --min-depth 1 \
-    --max-depth 6 \
-    --hidden \
-    --exclude .git \
-    --exclude node_modules \
-    --exclude __pycache__ \
-    --exclude .venv
-)") \
-    | fzf --ansi --prompt="Sessions/Projects> "
+  (
+    echo "$colored_sessions"
+    echo "$dirs"
+  ) | fzf --ansi --prompt="$prompt"
 )
 
 [ -z "$selected" ] && exit 0
