@@ -1,0 +1,42 @@
+[user]
+    name = Bhushan
+    email = alhatbhushan@gmail.com
+[alias]
+    ci = commit
+    cia = commit --amend
+    cian = commit --amend --no-edit
+    co = checkout
+    con = checkout -b
+    br = branch
+    cfg = config
+    st = status .
+    sta = status
+    lo = log --oneline
+    deploy = "!TAG=deploy.pixelbinz0.$(date +%s) && echo Deploying $TAG && git tag $TAG && git push origin $TAG"
+    usework = "!git config user.email 'bhushanalhat@gofynd.com' && git config user.name 'Bhushan Alhat' && echo 'Switched to WORK Git config'"
+    usepersonal = "!git config user.email 'alhatbhushan@gmail.com' && git config user.name 'Bhushan Alhat' && echo 'Switched to PERSONAL Git config'"
+    cmt = "!bash -c 'branch=$(git rev-parse --abbrev-ref HEAD | tr a-z A-Z); git commit --template <(echo \"ID:${branch};DONE:100;HOURS:9; \")'"
+[push]
+    autoSetupRemote = true
+    default = current
+
+# Work repos (anything under ~/work/)
+[includeIf "gitdir:~/work/**"]
+  path = ~/dotfiles/git/gitconfig-work
+
+# Optional: personal repos under a specific folder
+[includeIf "gitdir:~/personal/**"]
+  path = ~/dotfiles/git/gitconfig-personal
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+	azreposCredentialType = oauth
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[credential "azrepos:org/GoFynd"]
+	username = bhushanalhat@gofynd.com
+	azureAuthority = https://login.microsoftonline.com/af97945c-407d-45d4-a602-262f33b69784
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
