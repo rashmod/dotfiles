@@ -66,6 +66,16 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			pickers = {
 				find_files = {
 					hidden = true,
+					find_command = {
+						"sh",
+						"-c",
+						[[
+							{
+								fd -t f -H -E .git -E node_modules
+								fd -t f -H -I -E .git -E node_modules '^\.env(\..*)?$'
+							} | sort -u
+						]],
+					},
 				},
 			},
 			extensions = {
