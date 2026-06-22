@@ -67,6 +67,20 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "*/gitconfig", "*/gitconfig-*" },
+	callback = function()
+		vim.bo.filetype = "gitconfig"
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "*/zshrc", "*/zprofile", "*/zshenv", "*/zlogin", "*/zlogout" },
+	callback = function()
+		vim.bo.filetype = "zsh"
+	end,
+})
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
