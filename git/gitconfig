@@ -13,8 +13,8 @@
     sta = status
     lo = log --oneline
     deploy = "!TAG=deploy.pixelbinz0.$(date +%s) && echo Deploying $TAG && git tag $TAG && git push origin $TAG"
-    usework = "!git config user.email 'bhushanalhat@gofynd.com' && git config user.name 'Bhushan Alhat' && echo 'Switched to WORK Git config'"
-    usepersonal = "!git config user.email 'alhatbhushan@gmail.com' && git config user.name 'Bhushan Alhat' && echo 'Switched to PERSONAL Git config'"
+    usework = "!sh -c 'if command -v gh >/dev/null 2>&1; then current=$(gh auth status --hostname github.com 2>&1 | awk \"/account / { acct=\\$0; sub(/^.* account /, \\\"\\\", acct); sub(/ .*/, \\\"\\\", acct) } /Active account: true/ { print acct; exit }\"); echo \"GitHub current: ${current:-unknown}\"; gh auth switch --hostname github.com --user bhushanalhat-fynd >/dev/null && echo \"GitHub switched: bhushanalhat-fynd\" || echo \"GitHub: could not switch to bhushanalhat-fynd\"; else echo \"GitHub: gh not found\"; fi && git config user.email \"bhushanalhat@gofynd.com\" && git config user.name \"Bhushan Alhat\" && echo \"Git: work identity\"'"
+    usepersonal = "!sh -c 'if command -v gh >/dev/null 2>&1; then current=$(gh auth status --hostname github.com 2>&1 | awk \"/account / { acct=\\$0; sub(/^.* account /, \\\"\\\", acct); sub(/ .*/, \\\"\\\", acct) } /Active account: true/ { print acct; exit }\"); echo \"GitHub current: ${current:-unknown}\"; gh auth switch --hostname github.com --user rashmod >/dev/null && echo \"GitHub switched: rashmod\" || echo \"GitHub: could not switch to rashmod\"; else echo \"GitHub: gh not found\"; fi && git config user.email \"alhatbhushan@gmail.com\" && git config user.name \"Bhushan Alhat\" && echo \"Git: personal identity\"'"
     cmt = "!bash -c 'branch=$(git rev-parse --abbrev-ref HEAD | tr a-z A-Z); git commit --template <(echo \"ID:${branch};DONE:100;HOURS:9; \")'"
 [push]
     autoSetupRemote = true
@@ -38,6 +38,7 @@
 	azureAuthority = https://login.microsoftonline.com/af97945c-407d-45d4-a602-262f33b69784
 [core]
 	pager = delta
+	hooksPath = ~/personal/dotfiles/git/hooks
 [interactive]
 	diffFilter = delta --color-only
 [credential "https://github.com"]

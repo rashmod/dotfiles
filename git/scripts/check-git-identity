@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -u
+
+action="${1:-operation}"
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+email=$(git config --get user.email || true)
+
+work_root="${GIT_IDENTITY_WORK_ROOT:-$HOME/personal/work}"
+work_email="${GIT_IDENTITY_WORK_EMAIL:-bhushanalhat@gofynd.com}"
+personal_email="${GIT_IDENTITY_PERSONAL_EMAIL:-alhatbhushan@gmail.com}"
+
+case "$repo_root/" in
+  "$work_root"/*)
+    expected="work"
+    expected_email="$work_email"
+    ;;
+  *)
+    expected="personal"
+    expected_email="$personal_email"
+    ;;
+esac
+
+if [ "$email" = "$expected_email" ]; then
+  exit 0
+fi
+
+cat >&2 <<EOF
+warning: Git identity mismatch before $action
+
+  repo:     $repo_root
+  expected: $expected ($expected_email)
+  current:  ${email:-<unset>}
+
+Run one of these before retrying:
+  git usework
+  git usepersonal
+
+EOF
+
+if [ "${GIT_IDENTITY_ASSUME_YES:-0}" = "1" ]; then
+  exit 0
+fi
+
+if [ ! -r /dev/tty ]; then
+  echo "No interactive terminal available; blocking $action." >&2
+  exit 1
+fi
+
+printf "Continue with mismatched identity? [y/N] " > /dev/tty
+read -r answer < /dev/tty
+
+case "$answer" in
+  y|Y|yes|YES|Yes)
+    exit 0
+    ;;
+  *)
+    echo "Aborted $action." >&2
+    exit 1
+    ;;
+esac
