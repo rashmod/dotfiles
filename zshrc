@@ -157,3 +157,7 @@ if [ -f '/Users/bhushanalhat/Downloads/google-cloud-sdk/completion.zsh.inc' ]; t
 # Added by Antigravity
 export PATH="/Users/bhushanalhat/.antigravity/antigravity/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/bhushanalhat/.antigravity/antigravity/bin:$PATH"
+export PATH="/Library/TeX/texbin:$PATH"
