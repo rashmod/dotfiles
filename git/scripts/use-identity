@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -u
+
+identity="${1:-}"
+
+case "$identity" in
+  work)
+    gh_user="bhushanalhat-fynd"
+    git_email="bhushanalhat@gofynd.com"
+    git_name="Bhushan Alhat"
+    git_label="work"
+    ;;
+  personal)
+    gh_user="rashmod"
+    git_email="alhatbhushan@gmail.com"
+    git_name="Bhushan Alhat"
+    git_label="personal"
+    ;;
+  *)
+    printf 'usage: %s <work|personal>\n' "$0" >&2
+    exit 2
+    ;;
+esac
+
+current="unknown"
+if command -v gh >/dev/null 2>&1; then
+  current=$(
+    gh auth status --hostname github.com 2>&1 \
+      | awk '
+          /account / {
+            acct = $0
+            sub(/^.* account /, "", acct)
+            sub(/ .*/, "", acct)
+          }
+          /Active account: true/ {
+            print acct
+            exit
+          }
+        '
+  )
+
+  printf 'GitHub current: %s\n' "${current:-unknown}"
+
+  if gh auth switch --hostname github.com --user "$gh_user" >/dev/null; then
+    printf 'GitHub switched: %s\n' "$gh_user"
+  else
+    printf 'GitHub: could not switch to %s\n' "$gh_user"
+  fi
+else
+  printf 'GitHub: gh not found\n'
+fi
+
+git config user.email "$git_email"
+git config user.name "$git_name"
+printf 'Git: %s identity\n' "$git_label"
