@@ -2,7 +2,7 @@ local M = {}
 
 -- Get the root directory: LSP root > Git root > current file dir
 local function get_workspace_root()
-	local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
 	for _, client in ipairs(clients) do
 		local workspace_folders = client.config.workspace_folders
 		if workspace_folders then

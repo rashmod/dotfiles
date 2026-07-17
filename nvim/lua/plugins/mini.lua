@@ -76,7 +76,7 @@ return { -- Collection of various small independent plugins/modules
 		-- Style the statusline for inactive windows
 		---@diagnostic disable-next-line: duplicate-set-field
 		statusline.inactive = function()
-			vim.api.nvim_win_set_option(0, "winhighlight", "StatusLine:StatusLineNC")
+			vim.api.nvim_set_option_value("winhighlight", "StatusLine:StatusLineNC", { win = 0 })
 
 			return table.concat({
 				"", -- No mode
