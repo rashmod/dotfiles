@@ -14,6 +14,8 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.opt.termguicolors = true
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -67,7 +69,6 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
-
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = { "*/gitconfig", "*/gitconfig-*" },
 	callback = function()
@@ -81,6 +82,15 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "zsh"
 	end,
 })
+
+vim.opt.diffopt:append({
+	"internal",
+	"filler",
+	"closeoff",
+	"algorithm:patience",
+	"linematch:60",
+})
+
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
@@ -212,7 +222,7 @@ vim.keymap.set("n", "<leader>os", "<cmd>Leet submit<CR>", { desc = "Leet submit"
 
 -- CUSTOM MACROS
 vim.api.nvim_create_augroup("JSLogMacro", { clear = true })
-vim.api.nvim_create_autocmd("filetype", {
+vim.api.nvim_create_autocmd("FileType", {
 	group = "JSLogMacro",
 	pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 	callback = function()
