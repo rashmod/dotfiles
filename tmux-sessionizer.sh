@@ -54,6 +54,52 @@ color_path() {
     printf "\033[%sm%s:%s\033[0m\n" "$color" "$kind" "$path"
 }
 
+default_session_name() {
+  basename "$1" | tr -d '\n' | tr -c '[:alnum:]' '_'
+}
+
+confirm_session_name() {
+  local selected_dir="$1"
+  local default_name="$2"
+  local session_name
+
+  if [ -t 0 ] && [ -w /dev/tty ] && [ -r /dev/tty ]; then
+    clear > /dev/tty
+    printf "Selected:\n" > /dev/tty
+    printf "  %s\n\n" "$selected_dir" > /dev/tty
+    printf "Session name:\n" > /dev/tty
+
+    read -r -e -i "$default_name" -p "> " session_name < /dev/tty
+  else
+    session_name="$default_name"
+  fi
+
+  [ -n "$session_name" ] || return 1
+  printf "%s\n" "$session_name" | tr -d '\n' | tr -c '[:alnum:]' '_'
+}
+
+cache_base="${XDG_CACHE_HOME:-$HOME/.cache}/tmux-sessionizer"
+cache_ttl_minutes="${TMUX_SESSIONIZER_CACHE_TTL_MINUTES:-10}"
+
+cache_file_for_mode() {
+  printf "%s/%s.paths" "$cache_base" "$scan_mode"
+}
+
+cache_is_fresh() {
+  local cache_file="$1"
+
+  [ -f "$cache_file" ] || return 1
+  find "$cache_file" -mmin "-$cache_ttl_minutes" -print -quit | grep -q . || return 1
+
+  ! fd --glob ".worktrees" "$search_root" \
+    --type d \
+    --hidden \
+    --no-ignore \
+    --max-depth "$((max_depth - 1))" \
+    --changed-after "@$(stat -f %m "$cache_file")" \
+    --quiet
+}
+
 # List existing tmux sessions
 sessions=$(tmux list-sessions -F "#{session_name}" 2>/dev/null)
 
@@ -90,46 +136,61 @@ colored_repos=""
 colored_worktrees=""
 colored_dirs=""
 if [ -d "$search_root" ]; then
-  repo_dirs=$(
-    fd --glob ".git" "$search_root" \
-      --hidden \
-      --max-depth "$((max_depth + 1))" \
-      | while IFS= read -r git_path; do
-          dirname "$git_path"
-        done \
-      | sed 's#/*$##'
-  )
+  cache_file=$(cache_file_for_mode)
 
-  worktree_dirs=$(
-    fd --glob ".worktrees" "$search_root" \
-      --type d \
-      --hidden \
-      --no-ignore \
-      --max-depth "$((max_depth - 1))" \
-      --exec fd --glob ".git" {} \
+  if cache_is_fresh "$cache_file"; then
+    repo_dirs=$(awk -F '\t' '$1 == "repo" { print $2 }' "$cache_file")
+    worktree_dirs=$(awk -F '\t' '$1 == "worktree" { print $2 }' "$cache_file")
+    dirs=$(awk -F '\t' '$1 == "dir" { print $2 }' "$cache_file")
+  else
+    repo_dirs=$(
+      fd --glob ".git" "$search_root" \
+        --hidden \
+        --max-depth "$((max_depth + 1))" \
+        | while IFS= read -r git_path; do
+            dirname "$git_path"
+          done \
+        | sed 's#/*$##'
+    )
+
+    worktree_dirs=$(
+      fd --glob ".worktrees" "$search_root" \
+        --type d \
         --hidden \
         --no-ignore \
-        --max-depth 2 \
-      | while IFS= read -r git_path; do
-          dirname "$git_path"
-        done \
-      | sed 's#/*$##'
-  )
+        --max-depth "$((max_depth - 1))" \
+        --exec fd --glob ".git" {} \
+          --hidden \
+          --no-ignore \
+          --max-depth 2 \
+        | while IFS= read -r git_path; do
+            dirname "$git_path"
+          done \
+        | sed 's#/*$##'
+    )
 
-  dirs=$(
-    fd . "$search_root" \
-      --type d \
-      --min-depth 1 \
-      --max-depth "$max_depth" \
-      --hidden \
-      --exclude .git \
-      --exclude node_modules \
-      --exclude __pycache__ \
-      --exclude .venv \
-      | sed 's#/*$##' \
-      | grep -vxF -f <(printf "%s\n%s\n" "$repo_dirs" "$worktree_dirs" | sed '/^$/d') \
-      | sort -u
-  )
+    dirs=$(
+      fd . "$search_root" \
+        --type d \
+        --min-depth 1 \
+        --max-depth "$max_depth" \
+        --hidden \
+        --exclude .git \
+        --exclude node_modules \
+        --exclude __pycache__ \
+        --exclude .venv \
+        | sed 's#/*$##' \
+        | grep -vxF -f <(printf "%s\n%s\n" "$repo_dirs" "$worktree_dirs" | sed '/^$/d') \
+        | sort -u
+    )
+
+    mkdir -p "$cache_base"
+    {
+      printf "%s\n" "$repo_dirs" | sed '/^$/d' | sort -u | sed 's/^/repo\t/'
+      printf "%s\n" "$worktree_dirs" | sed '/^$/d' | sort -u | sed 's/^/worktree\t/'
+      printf "%s\n" "$dirs" | sed '/^$/d' | sort -u | sed 's/^/dir\t/'
+    } > "$cache_file"
+  fi
 
   colored_repos=$(
     printf "%s\n" "$repo_dirs" \
@@ -207,7 +268,8 @@ else
   selected_dir=${cleaned#repo:}
   selected_dir=${selected_dir#worktree:}
   selected_dir=${selected_dir#dir:}
-  session_name=$(basename "$selected_dir" | tr -d '\n' | tr -c '[:alnum:]' '_')
+  default_name=$(default_session_name "$selected_dir")
+  session_name=$(confirm_session_name "$selected_dir" "$default_name") || exit 0
 
   if ! tmux has-session -t="$session_name" 2>/dev/null; then
     tmux new-session -ds "$session_name" -c "$selected_dir"
