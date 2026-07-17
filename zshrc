@@ -69,6 +69,39 @@ if command -v oh-my-posh >/dev/null 2>&1 && [ -f "$DOTFILES_PATH/ohmyposh.toml" 
   eval "$(oh-my-posh init zsh --config "$DOTFILES_PATH/ohmyposh.toml")"
 fi
 
+##### Command timing ###########################################################
+zmodload zsh/datetime 2>/dev/null
+
+__cmd_start_epoch=""
+__cmd_start_time=""
+
+preexec() {
+  __cmd_start_epoch=$EPOCHREALTIME
+  __cmd_start_time=$(date +"%H:%M:%S")
+}
+
+precmd() {
+  local exit_code=$?
+
+  if [ -n "$__cmd_start_epoch" ]; then
+    local end_epoch end_time duration cmd_status
+
+    end_epoch=$EPOCHREALTIME
+    end_time=$(date +"%H:%M:%S")
+    duration=$(awk "BEGIN { printf \"%.2fs\", $end_epoch - $__cmd_start_epoch }")
+
+    if [ "$exit_code" -eq 0 ]; then
+      cmd_status="✓"
+    else
+      cmd_status="✗"
+    fi
+
+    printf "%s %s → %s  %s\n" "$cmd_status" "$__cmd_start_time" "$end_time" "$duration"
+    __cmd_start_epoch=""
+    __cmd_start_time=""
+  fi
+}
+
 ##### Tmuxifier (guarded) #####################################################
 if command -v tmuxifier >/dev/null 2>&1; then
   eval "$(tmuxifier init -)"

@@ -16,11 +16,6 @@ final_space = true
   foreground = 'p:black'
   background = 'transparent'
 
-[transient_prompt]
-  template = '<p:yellow,transparent></><,p:yellow> {{ .Folder }} </><p:yellow,transparent></> '
-  foreground = 'p:black'
-  background = 'transparent'
-
 [upgrade]
   source = 'cdn'
   interval = '168h'
@@ -75,6 +70,14 @@ final_space = true
     type = 'root'
     style = 'powerline'
 
+  [[blocks.segments]]
+    template = '  {{ .CurrentDate | date "15:04:05" }} '
+    foreground = 'p:white'
+    powerline_symbol = ''
+    background = 'p:black'
+    type = 'time'
+    style = 'powerline'
+
 [[blocks]]
   type = 'prompt'
   alignment = 'left'
@@ -99,6 +102,7 @@ final_space = true
   [tooltips.properties]
     display_default = true
 
+
 [[tooltips]]
   leading_diamond = ''
   trailing_diamond = ''
@@ -111,4 +115,3 @@ final_space = true
 
   [tooltips.properties]
     display_default = true
-
