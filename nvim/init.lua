@@ -14,8 +14,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+local uv = vim.uv or vim.loop
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not uv.fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
 	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
 	if vim.v.shell_error ~= 0 then
@@ -42,13 +43,9 @@ require("lazy").setup("plugins", {
 	},
 })
 
--- [[ Project-specific config loader ]]
--- If there's a `.nvim.lua` file in the current directory, load it
-if vim.loop.fs_stat(".nvim.lua") then
-	vim.opt.exrc = true -- Allow project-specific config
-	vim.opt.secure = true -- Prevent unsafe execution of unknown scripts
-	vim.cmd("luafile .nvim.lua") -- Automatically load the project-specific `.nvim.lua`
-end
+-- Let Neovim handle project-local config files like `.nvim.lua`.
+vim.opt.exrc = true
+vim.opt.secure = true
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

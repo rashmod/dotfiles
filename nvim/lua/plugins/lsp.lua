@@ -17,8 +17,8 @@ return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
-			{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
-			"williamboman/mason-lspconfig.nvim",
+			{ "mason-org/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			-- Useful status updates for LSP.
@@ -29,6 +29,25 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
+			local uv = vim.uv or vim.loop
+
+			vim.opt.foldcolumn = "1"
+			vim.opt.foldlevel = 99
+			vim.opt.foldlevelstart = 99
+			vim.opt.foldenable = true
+			vim.opt.foldmethod = "expr"
+			vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+			vim.opt.foldtext = "v:lua.vim.lsp.foldtext()"
+
+			vim.keymap.set("n", "zR", function()
+				vim.cmd.normal({ "zR", bang = true })
+			end, { desc = "Open all folds" })
+			vim.keymap.set("n", "zM", function()
+				vim.cmd.normal({ "zM", bang = true })
+			end, { desc = "Close all folds" })
+			vim.keymap.set("n", "zK", function()
+				vim.cmd.normal({ "zv", bang = true })
+			end, { desc = "Reveal fold under cursor" })
 			-- Brief aside: **What is LSP?**
 			--
 			-- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -118,6 +137,13 @@ return {
 					--
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) then
+						local winid = vim.fn.bufwinid(event.buf)
+						if winid ~= -1 then
+							vim.wo[winid].foldexpr = "v:lua.vim.lsp.foldexpr()"
+						end
+					end
+
 					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 						local highlight_augroup =
 							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
@@ -160,6 +186,10 @@ return {
 			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			capabilities.textDocument.foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true,
+			}
 
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -229,17 +259,16 @@ return {
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+			for server_name, server in pairs(servers) do
+				-- Extend the runtime config published by nvim-lspconfig with local overrides.
+				vim.lsp.config(server_name, vim.tbl_deep_extend("force", {}, server, {
+					capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {}),
+				}))
+			end
+
 			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						-- This handles overriding only values explicitly passed
-						-- by the server configuration above. Useful when disabling
-						-- certain features of an LSP (for example, turning off formatting for tsserver)
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
-					end,
-				},
+				ensure_installed = vim.tbl_keys(servers),
+				automatic_enable = vim.tbl_keys(servers),
 			})
 
 			-- 1. find venv folder in current dir or 1 level deeper (venv/ or proj/venv)
@@ -250,10 +279,10 @@ return {
 					return venv_path
 				end
 				-- Check one level deeper (e.g if venv is in proj/venv)
-				local handle = vim.loop.fs_scandir(start_path)
+				local handle = uv.fs_scandir(start_path)
 				if handle then
 					while true do
-						local name, type = vim.loop.fs_scandir_next(handle)
+						local name, type = uv.fs_scandir_next(handle)
 						if not name then
 							break
 						end
