@@ -4,9 +4,11 @@ strip_ansi() {
     sed -r 's/\x1B\[[0-9;]*[mK]//g'
 }
 
-if [[ "${1:-}" == "__filter" ]]; then
-  query="${2:-}"
-  shift 2
+filter_sections() {
+  local query="${1:-}"
+  local section_file plain_matches plain_match colored_line
+
+  shift
 
   for section_file in "$@"; do
     if [ -z "$query" ]; then
@@ -26,11 +28,49 @@ if [[ "${1:-}" == "__filter" ]]; then
       done <<< "$plain_matches"
     fi
   done
+}
 
+if [[ "${1:-}" == "__filter" ]]; then
+  query="${2:-}"
+  shift 2
+
+  filter_sections "$query" "$@"
   exit 0
 fi
 
-scan_mode="${1:-personal}"
+if [[ "${1:-}" == "__info" ]]; then
+  info="${FZF_INFO:-}"
+  hint="${2:-}"
+  columns="${FZF_COLUMNS:-80}"
+
+  if ! [[ "$columns" =~ ^[0-9]+$ ]]; then
+    columns=80
+  fi
+
+  # fzf reserves a small amount of space around the info row; keep the hint
+  # clear of the right edge so it does not get ellipsized.
+  columns=$((columns - 8))
+  [ "$columns" -lt 1 ] && columns=1
+
+  gap=$((columns - ${#info} - ${#hint}))
+  [ "$gap" -lt 1 ] && gap=1
+
+  printf "%s%*s%s" "$info" "$gap" "" "$hint"
+  exit 0
+fi
+
+force_cache_refresh=0
+refresh_query=""
+refresh_section_files=()
+
+if [[ "${1:-}" == "__refresh" ]]; then
+  refresh_query="${2:-}"
+  scan_mode="${3:-personal}"
+  refresh_section_files=("${@:4}")
+  force_cache_refresh=1
+else
+  scan_mode="${1:-personal}"
+fi
 
 # Function to colorize sessions
 color_session() {
@@ -138,7 +178,7 @@ colored_dirs=""
 if [ -d "$search_root" ]; then
   cache_file=$(cache_file_for_mode)
 
-  if cache_is_fresh "$cache_file"; then
+  if [ "$force_cache_refresh" -eq 0 ] && cache_is_fresh "$cache_file"; then
     repo_dirs=$(awk -F '\t' '$1 == "repo" { print $2 }' "$cache_file")
     worktree_dirs=$(awk -F '\t' '$1 == "worktree" { print $2 }' "$cache_file")
     dirs=$(awk -F '\t' '$1 == "dir" { print $2 }' "$cache_file")
@@ -220,6 +260,26 @@ if [ -d "$search_root" ]; then
   )
 fi
 
+if [ "$force_cache_refresh" -eq 1 ]; then
+  if [ "${#refresh_section_files[@]}" -ne 4 ]; then
+    printf 'Refresh requires session, repo, worktree, and dir section files.\n' >&2
+    exit 1
+  fi
+
+  session_file="${refresh_section_files[0]}"
+  repo_file="${refresh_section_files[1]}"
+  worktree_file="${refresh_section_files[2]}"
+  dir_file="${refresh_section_files[3]}"
+
+  printf "%s\n" "$colored_sessions" | sed '/^$/d' > "$session_file"
+  printf "%s\n" "$colored_repos" | sed '/^$/d' > "$repo_file"
+  printf "%s\n" "$colored_worktrees" | sed '/^$/d' > "$worktree_file"
+  printf "%s\n" "$colored_dirs" | sed '/^$/d' > "$dir_file"
+
+  filter_sections "$refresh_query" "$session_file" "$repo_file" "$worktree_file" "$dir_file"
+  exit 0
+fi
+
 script_path="${BASH_SOURCE[0]}"
 if [[ "$script_path" != */* ]]; then
   script_path=$(command -v "$script_path")
@@ -245,13 +305,28 @@ filter_cmd=$(printf "%q __filter {q} %q %q %q %q" \
   "$worktree_file" \
   "$dir_file")
 
+refresh_filter_cmd=$(printf "%q __refresh {q} %q %q %q %q %q" \
+  "$script_path" \
+  "$scan_mode" \
+  "$session_file" \
+  "$repo_file" \
+  "$worktree_file" \
+  "$dir_file")
+
+refresh_hint="ctrl-r: refresh cache"
+refresh_info_cmd=$(printf "%q __info %q" "$script_path" "$refresh_hint")
+
 # Filter each section independently so fuzzy sorting stays within section priority.
 selected=$(
   fzf --ansi \
     --disabled \
     --prompt="$prompt" \
+    --no-separator \
+    --info=default \
+    --info-command="$refresh_info_cmd" \
     --bind "start:reload:$filter_cmd" \
-    --bind "change:reload:$filter_cmd"
+    --bind "change:reload:$filter_cmd" \
+    --bind "ctrl-r:reload:$refresh_filter_cmd"
 )
 
 [ -z "$selected" ] && exit 0
