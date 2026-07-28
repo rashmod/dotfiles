@@ -1,8 +1,8 @@
 # Codex notification icon
 
-`codex.png` is the locally stored Codex app-style icon used by
-`codex-notify.sh`. The blue cloud and terminal mark matches the Codex visual
-shown in OpenAI's
+`codex.png` is the locally stored Codex app-style icon used by the shared
+`notifications/agent-notify.sh` script. The blue cloud and terminal mark
+matches the Codex visual shown in OpenAI's
 [Codex app announcement](https://openai.com/index/introducing-the-codex-app/).
 
 The source PNG was originally downloaded from

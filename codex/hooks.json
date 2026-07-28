@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/bhushanalhat/.codex/codex-notify.sh task-complete",
+            "command": "/Users/bhushanalhat/.codex/codex-notify.sh codex task-complete",
             "timeout": 2,
             "statusMessage": "Sending completion notification"
           }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/bhushanalhat/.codex/codex-notify.sh approval-required",
+            "command": "/Users/bhushanalhat/.codex/codex-notify.sh codex approval-required",
             "timeout": 2,
             "statusMessage": "Sending approval notification"
           }

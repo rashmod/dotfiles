@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$HOME/.claude/claude-notify.sh\" task-complete",
+            "command": "\"$HOME/.claude/claude-notify.sh\" claude task-complete",
             "timeout": 2
           }
         ]
@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$HOME/.claude/claude-notify.sh\" approval-required",
+            "command": "\"$HOME/.claude/claude-notify.sh\" claude approval-required",
             "timeout": 2
           }
         ]
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$HOME/.claude/claude-notify.sh\" task-failed",
+            "command": "\"$HOME/.claude/claude-notify.sh\" claude task-failed",
             "timeout": 2
           }
         ]
