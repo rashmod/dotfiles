@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/bhushanalhat/.codex/codex-notify.sh task-complete",
+            "timeout": 2,
+            "statusMessage": "Sending completion notification"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/bhushanalhat/.codex/codex-notify.sh approval-required",
+            "timeout": 2,
+            "statusMessage": "Sending approval notification"
+          }
+        ]
+      }
+    ]
+  }
+}
