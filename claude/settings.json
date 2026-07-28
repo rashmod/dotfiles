@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "haiku",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/claude-notify.sh\" task-complete",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/claude-notify.sh\" approval-required",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.claude/claude-notify.sh\" task-failed",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  },
+  "skipAutoPermissionPrompt": true
+}
